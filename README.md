@@ -14,7 +14,7 @@ Pawan Mishra
 Rohit Gupta  
 Shivam Pal
 
-Colaboration
+Collaboration
 ------------
 
 1. Clone and enter into the repository  
