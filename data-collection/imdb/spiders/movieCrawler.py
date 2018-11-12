@@ -44,7 +44,7 @@ class movieCrawler(scrapy.Spider):
         if title!=None:
             title = ' '.join(title.split())
             for key in self.illegalChars:
-                if key in title: title.replace(key,self.illegalChars[key])
+                if key in title: title = title.replace(key,self.illegalChars[key])
             movie["Title"] = title
         else: doNotSave=True
         
