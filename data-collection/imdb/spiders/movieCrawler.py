@@ -33,22 +33,28 @@ class movieCrawler(scrapy.Spider):
     people_links = {}
     detail_fields = ["Taglines:", "Country:", "Language:", "Budget:", "Cumulative Worldwide Gross:", "Production Co:"]
     director_fields = ["Director:", "Writers:"]
+    illegalChars = {'<':'', '>':'', ':':'', '"':'', '/':' ', '\\':' ', '|':'', '?':'', '*':' '}
 
     def parse(self,response):
         movie = {}
         self.people_links = {}
+        doNotSave = False
         
         title = response.xpath('//div[@class="title_wrapper"]/h1/text()').extract_first()
-        if title!=None: movie["Title"] = ' '.join(title.split()).replace(':',"")
-        else: sys.exit()
+        if title!=None:
+            title = ' '.join(title.split())
+            for key in self.illegalChars:
+                if key in title: title.replace(key,self.illegalChars[key])
+            movie["Title"] = title
+        else: doNotSave=True
         
         film_rating = response.xpath('//div[@class="subtext"]/text()').extract_first()
         if film_rating!=None: movie["Film_rating"] = ' '.join(film_rating.split())
-        else: sys.exit()
+        else: doNotSave=True
         
         duration = response.xpath('//div[@class="subtext"]/time/text()').extract_first()
         if duration!=None: movie["Duration"] = ' '.join(duration.split())
-        else: sys.exit()
+        else:doNotSave=True
 
         description = response.xpath('//div[@class="summary_text"]/text()').extract_first()
         if description!=None: movie["Description"] = ' '.join(description.split())
@@ -56,11 +62,11 @@ class movieCrawler(scrapy.Spider):
         
         imdb_rating = response.xpath('//span[@itemprop="ratingValue"]/text()').extract_first()
         if imdb_rating!=None: movie["IMDB_rating"] = ' '.join(description.split())
-        else: sys.exit()
+        else: doNotSave=True
         
         rating_count = response.xpath('//span[@itemprop="ratingCount"]/text()').extract_first()
         if rating_count!=None: movie["IMDB_rating_count"] = ' '.join(rating_count.split())
-        else: sys.exit()
+        else: doNotSave=True
         
         movie["Genre"], movie["release_date"] = self.getGenreReleaseDate(response.xpath('//div[@class="subtext"]/a'))
         movie["Storyline"] = self.getStoryline(response.xpath('//div[@id="titleStoryLine"]/div[1]/p'))
@@ -75,11 +81,13 @@ class movieCrawler(scrapy.Spider):
         for key in details:
             movie[key] = details[key]
 
-        with open(movies_directory+movie["Title"]+".json", 'w') as f:
-            json.dump(movie, f)
+        if not doNotSave:
+            with open(movies_directory+movie["Title"]+".json", 'w') as f:
+                json.dump(movie, f)
         
-        with open(links_directory+movie["Title"]+" people"+'.json', 'w') as f:
-            json.dump(self.people_links, f)
+        if not doNotSave:
+            with open(links_directory+movie["Title"]+" people"+'.json', 'w') as f:
+                json.dump(self.people_links, f)
         
         for anchor in response.xpath('//div[@class="rec-title"]'):
             url = "https://www.imdb.com" + anchor.xpath('./a/@href').extract_first()
