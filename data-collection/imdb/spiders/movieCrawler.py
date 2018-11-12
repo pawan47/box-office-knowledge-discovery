@@ -61,7 +61,7 @@ class movieCrawler(scrapy.Spider):
         else: movie["Description"] = "NA"
         
         imdb_rating = response.xpath('//span[@itemprop="ratingValue"]/text()').extract_first()
-        if imdb_rating!=None: movie["IMDB_rating"] = ' '.join(description.split())
+        if imdb_rating!=None: movie["IMDB_rating"] = ' '.join(imdb_rating.split())
         else: doNotSave=True
         
         rating_count = response.xpath('//span[@itemprop="ratingCount"]/text()').extract_first()
@@ -81,11 +81,11 @@ class movieCrawler(scrapy.Spider):
         for key in details:
             movie[key] = details[key]
 
-        if not doNotSave:
+        if not doNotSave and not os.path.isfile(movies_directory+movie["Title"]+".json"):
             with open(movies_directory+movie["Title"]+".json", 'w') as f:
                 json.dump(movie, f)
         
-        if not doNotSave:
+        if not doNotSave and not os.path.isfile(links_directory+movie["Title"]+" people"+'.json'):
             with open(links_directory+movie["Title"]+" people"+'.json', 'w') as f:
                 json.dump(self.people_links, f)
         
@@ -99,15 +99,17 @@ class movieCrawler(scrapy.Spider):
         vals = []
         for text in subtext:
             vals.append(text.xpath('./text()').extract_first())
-        release_date = ' '.join(vals[-1].split())
+        if vals!=None: release_date = ' '.join(vals[-1].split())
+        else: release_date = "NA"
         genre = []
-        for val in vals[:-1]:
-            for element in val.split():
-                genre.append(element)
+        if vals!=None:
+            for val in vals[:-1]:
+                for element in val.split():
+                    genre.append(element)
         return genre, release_date
     
     def getDirectors(self,csis):
-        directors = {}
+        directors = {"Director:":[], "Writers:":[]}
         for csi in csis:
             field = csi.xpath('./h4/text()').extract_first()
             if field==None:
@@ -136,16 +138,18 @@ class movieCrawler(scrapy.Spider):
         return cast_list
     
     def getTagline(self,txts):
+        taglines = ""
         for txt in txts:
             text = txt.xpath('./h4/text()').extract_first()
             if text==None:
                 continue
             text = ' '.join(txt.xpath('./h4/text()').extract_first().split())
             if text == "Taglines:":
-                return ' '.join(txt.xpath('./text()').extract()[1].split())
+                taglines = ' '.join(txt.xpath('./text()').extract()[1].split())
+        return taglines
     
     def getDetails(self,titleDetails):
-        details = {}
+        details = {"Budget":"", "Revenue":""}
         for detail in titleDetails.xpath('./div[@class="txt-block"]'):
             text = detail.xpath('./h4/text()').extract_first()
             if text==None:
