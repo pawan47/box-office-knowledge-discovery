@@ -37,19 +37,32 @@ class movieCrawler(scrapy.Spider):
     def parse(self,response):
         movie = {}
         self.people_links = {}
-        movie["Title"] = ' '.join(response.xpath('//div[@class="title_wrapper"]/h1/text()').extract_first().split()).replace(':',"")
-        movie["Film_rating"] = ' '.join(response.xpath('//div[@class="subtext"]/text()').extract_first().split())
-        if response.xpath('//div[@class="subtext"]/time/text()').extract_first()!=None:
-            movie["Duration"] = ' '.join(response.xpath('//div[@class="subtext"]/time/text()').extract_first().split())
-        else:
-            movie["Duration"] = "NA"
+        
+        title = response.xpath('//div[@class="title_wrapper"]/h1/text()').extract_first()
+        if title!=None: movie["Title"] = ' '.join(title.split()).replace(':',"")
+        else: sys.exit()
+        
+        film_rating = response.xpath('//div[@class="subtext"]/text()').extract_first()
+        if film_rating!=None: movie["Film_rating"] = ' '.join(film_rating.split())
+        else: sys.exit()
+        
+        duration = response.xpath('//div[@class="subtext"]/time/text()').extract_first()
+        if duration!=None: movie["Duration"] = ' '.join(duration.split())
+        else: sys.exit()
+
+        description = response.xpath('//div[@class="summary_text"]/text()').extract_first()
+        if description!=None: movie["Description"] = ' '.join(description.split())
+        else: movie["Description"] = "NA"
+        
+        imdb_rating = response.xpath('//span[@itemprop="ratingValue"]/text()').extract_first()
+        if imdb_rating!=None: movie["IMDB_rating"] = ' '.join(description.split())
+        else: sys.exit()
+        
+        rating_count = response.xpath('//span[@itemprop="ratingCount"]/text()').extract_first()
+        if rating_count!=None: movie["IMDB_rating_count"] = ' '.join(rating_count.split())
+        else: sys.exit()
+        
         movie["Genre"], movie["release_date"] = self.getGenreReleaseDate(response.xpath('//div[@class="subtext"]/a'))
-        movie["Description"] = ' '.join(response.xpath('//div[@class="summary_text"]/text()').extract_first().split())
-        if response.xpath('//span[@itemprop="ratingValue"]/text()').extract_first()!=None:
-            movie["IMDB_rating"] = ' '.join(response.xpath('//span[@itemprop="ratingValue"]/text()').extract_first().split())
-        else:
-            movie["IMDB_rating"] = "NA"
-        movie["IMDB_rating_count"] = ' '.join(response.xpath('//span[@itemprop="ratingCount"]/text()').extract_first().split())
         movie["Storyline"] = self.getStoryline(response.xpath('//div[@id="titleStoryLine"]/div[1]/p'))
         directors = self.getDirectors(response.xpath('//div[@class="credit_summary_item"]'))
         movie['Cast'] = self.getCastList(response.xpath('//table[@class="cast_list"]/tr'))
