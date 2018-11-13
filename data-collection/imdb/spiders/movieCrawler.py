@@ -83,6 +83,8 @@ class movieCrawler(scrapy.Spider):
         
         for key in details:
             movie[key] = details[key]
+        
+        movie['url'] = response.request.url
 
         if not doNotSave and not os.path.isfile(movies_directory+saveName+".json"):
             with open(movies_directory+saveName+".json", 'w') as f:
