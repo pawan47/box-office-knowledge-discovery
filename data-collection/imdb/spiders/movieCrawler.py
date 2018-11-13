@@ -50,11 +50,11 @@ class movieCrawler(scrapy.Spider):
         
         film_rating = response.xpath('//div[@class="subtext"]/text()').extract_first()
         if film_rating!=None: movie["Film_rating"] = ' '.join(film_rating.split())
-        else: doNotSave=True
+        else: movie["Film_rating"] = 'NA'
         
         duration = response.xpath('//div[@class="subtext"]/time/text()').extract_first()
         if duration!=None: movie["Duration"] = ' '.join(duration.split())
-        else:doNotSave=True
+        else: movie["Duration"] = 'NA'
 
         description = response.xpath('//div[@class="summary_text"]/text()').extract_first()
         if description!=None: movie["Description"] = ' '.join(description.split())
