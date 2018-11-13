@@ -39,12 +39,15 @@ class movieCrawler(scrapy.Spider):
         movie = {}
         self.people_links = {}
         doNotSave = False
-        
+        saveName = response.request.url.split('/')[4]
+        movie['Id'] = saveName
         title = response.xpath('//div[@class="title_wrapper"]/h1/text()').extract_first()
         if title!=None:
             title = ' '.join(title.split())
+            '''
             for key in self.illegalChars:
                 if key in title: title = title.replace(key,self.illegalChars[key])
+            '''
             movie["Title"] = title
         else: doNotSave=True
         
@@ -81,14 +84,14 @@ class movieCrawler(scrapy.Spider):
         for key in details:
             movie[key] = details[key]
 
-        if not doNotSave and not os.path.isfile(movies_directory+movie["Title"]+".json"):
-            with open(movies_directory+movie["Title"]+".json", 'w') as f:
+        if not doNotSave and not os.path.isfile(movies_directory+saveName+".json"):
+            with open(movies_directory+saveName+".json", 'w') as f:
                 json.dump(movie, f)
-        
-        if not doNotSave and not os.path.isfile(links_directory+movie["Title"]+" people"+'.json'):
-            with open(links_directory+movie["Title"]+" people"+'.json', 'w') as f:
+        '''
+        if not doNotSave and not os.path.isfile(links_directory+saveName+" people"+'.json'):
+            with open(links_directory+saveName+" people"+'.json', 'w') as f:
                 json.dump(self.people_links, f)
-        
+        '''
         for anchor in response.xpath('//div[@class="rec-title"]'):
             url = "https://www.imdb.com" + anchor.xpath('./a/@href').extract_first()
             if url!=None or url!="":
