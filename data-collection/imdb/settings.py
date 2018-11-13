@@ -22,7 +22,7 @@ NEWSPIDER_MODULE = 'imdb.spiders'
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 15000
+CONCURRENT_REQUESTS = 16000
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -89,6 +89,7 @@ CONCURRENT_REQUESTS = 15000
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-DEPTH_PRIORITY = 500
+DEPTH_LIMIT = 200
+DEPTH_PRIORITY = 16000
 SCHEDULER_DISK_QUEUE = 'scrapy.squeues.MarshalFifoDiskQueue'
 SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
