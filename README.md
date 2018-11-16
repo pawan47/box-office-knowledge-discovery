@@ -41,6 +41,17 @@ web-scraping
 2. Preparing a ML model to predict movie ratings and Box-office
 performance of the movies based on these factors
 
+Pre-requisite:
+--------------
+Pakages used:
+All codes are written in python3(>3.5). To install all dependency run the following command
+```
+pip install scrapy
+pip install sklearn
+pip install xgboost
+pip install pandas
+```
+
 Data Collection
 ---------------
 
