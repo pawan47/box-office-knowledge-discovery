@@ -101,21 +101,21 @@ Each file is saved with *Id* as filename.
 
 Movie Recommendation system:
 ---------------------------
-This system is able to Recommend top 10 similar movies given user quarey. It is an knowledge based recommendation system. It takes an movie as an input and output top 10 most relevent/similar movies. We are using cosine similarity to find similar movies. 
+This system can Recommend top 10 similar movies given user query. It is a knowledge-based recommendation system. It takes a movie as an input and output top 10 most relevant/similar movies. We are using cosine similarity to find similar movies. 
 
 To run the script:
 ```
 python Movie_recommendation_system.py
 ``` 
-It will output top 10 most similar movie to an movie
+It will output the top 10 most similar movie to a movie
 
-Algo:
-* Clean all the data (removed all stop words, lemmitize sentences, stemming used, removed all short-hand used in english)
-* Combine movie Description and storyline formed an new sentence (named it soup).
-* Trained tf-idf vectorizer on soup sentences.
-* Comvert all the combind sentences to an tf-idf matrix.
-* When  an query comes it will clean it and convert it into a tf-idf vector using previous trained tf-idf vectorizer.
-* Find cosine similarity by multiplying this tf-idf vector to matrix.
-* Display top 10 movies in descreasing order of score.
+Algorithm:
+- Clean all the data (removed all stop words, lemmatize sentences, stemming used, removed all short-hand used in English)
+- Combine movie Description and storyline formed a new sentence (named it soup).
+- Trained tf-idf vectorizer on soup sentences.
+- Convert all the combined sentences to a tf-idf matrix.
+- When a query comes, it will clean it and convert it into a tf-idf vector using previously trained tf-idf vectorizer.
+- Find cosine similarity by multiplying this tf-idf vector to the matrix.
+- Display top 10 movies in decreasing order of score.
 
 
