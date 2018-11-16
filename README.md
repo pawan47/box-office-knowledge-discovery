@@ -118,4 +118,17 @@ Algorithm:
 - Find cosine similarity by multiplying this tf-idf vector to the matrix.
 - Display top 10 movies in decreasing order of score.
 
+Movie rating system:
+--------------------
 
+It displays top 20 movies based on average movie rating and no of votes on that movie. It calculates a score for every movie based on average rating and no of votes.
+
+Algorithm:
+ * Calculate mean of all movie rating name it c
+ * Calculate 90 percentile of no of votes and name it m
+ * Take all the movies that are above 90 percentile of votes count.
+ * Calculate the score for every movie by following formula:
+```
+Score = ((2* Vote_count* rating) / (Vote_count+ m)) + ((m* c)/(Vote_count+ m))
+``` 
+ * Display all the movies in decreasing order of Score.
