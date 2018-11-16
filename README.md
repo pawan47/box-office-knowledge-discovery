@@ -148,3 +148,20 @@ Algorithm:
 Score = ((2* Vote_count* rating) / (Vote_count+ m)) + ((m* c)/(Vote_count+ m))
 ``` 
  * Display all the movies in decreasing order of Score.
+ 
+Genre Prediction:
+--------------------
+
+We use OneVsRest classification to predict genre of a movie given its Description, StoryLine and Taglines from IMDB. Since the number of movies of some genres was small, we merged some labels into one. Thus we are finally giving movies labels from a set of 11 labels. 
+
+Method: genre_prediction.py does the following - 
+ * Clean all the data (removed all stop words, lemmatize sentences, stemming used, removed all short-hand used in English)
+ * Combine movie Description, Taglines and storyline formed a new sentence (named it soup)
+ * Train tf-idf vectorizer on soup sentences
+ * Convert all the data to a tf-idf matrix
+ * Binary encode all the labels
+ * Split the train & test data
+ * Train n classifiers (n = number of labels) to predict whether the movie is of that genre or not
+ * Output Accuracy for each classifier type for each genre
+ 
+ Note: We have to mention the csv file name in the code whenever we want to run and ensure it is present in same directory.
