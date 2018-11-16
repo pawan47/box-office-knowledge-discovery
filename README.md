@@ -85,7 +85,7 @@ The has been collected by recursively following links on movies pages of *IMDB* 
 * IMDB_Rating
 * IMDB_rating_count: number of people who have rated the movie
 * Genre
-* release_data
+* release_date
 * Storyline
 * Cast
 * Taglines
