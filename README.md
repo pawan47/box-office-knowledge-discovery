@@ -54,7 +54,7 @@ pip install pandas
 Data Collection
 ---------------
 
-All the data used for recomendation and prediction has been collected from *IMDB* webpages of the movies. A automatic web scraping program has been implemented using the Scrapy framework, to perform data collection. To run the program follow the instructions below:
+All the data used for recommendation and prediction has been collected from *IMDB* webpages of the movies. A automatic web scraping program has been implemented using the Scrapy framework, to perform data collection. To run the program follow the instructions below:
 
 1. Install Scrapy: `pip install scrapy` or if you use anaconda, `conda install scrapy`
 
