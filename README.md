@@ -43,8 +43,7 @@ performance of the movies based on these factors
 
 Pre-requisite:
 --------------
-Pakages used:
-All codes are written in python3(>3.5). To install all dependency run the following command
+All codes are written in python3(>3.5). To install all dependencys run the following command
 ```
 pip install scrapy
 pip install sklearn
@@ -99,3 +98,24 @@ The has been collected by recursively following links on movies pages of *IMDB* 
 * url
 
 Each file is saved with *Id* as filename.
+
+Movie Recommendation system:
+---------------------------
+This system is able to Recommend top 10 similar movies given user quarey. It is an knowledge based recommendation system. It takes an movie as an input and output top 10 most relevent/similar movies. We are using cosine similarity to find similar movies. 
+
+To run the script:
+```
+python Movie_recommendation_system.py
+``` 
+It will output top 10 most similar movie to an movie
+
+Algo:
+* Clean all the data (removed all stop words, lemmitize sentences, stemming used, removed all short-hand used in english)
+* Combine movie Description and storyline formed an new sentence (named it soup).
+* Trained tf-idf vectorizer on soup sentences.
+* Comvert all the combind sentences to an tf-idf matrix.
+* When  an query comes it will clean it and convert it into a tf-idf vector using previous trained tf-idf vectorizer.
+* Find cosine similarity by multiplying this tf-idf vector to matrix.
+* Display top 10 movies in descreasing order of score.
+
+
