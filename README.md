@@ -118,6 +118,22 @@ Algorithm:
 - Find cosine similarity by multiplying this tf-idf vector to the matrix.
 - Display top 10 movies in decreasing order of score.
 
+
+Movie Success Prediction:
+-------------------------
+
+This system will predcit the success of a movie. For training the model, we choose film rating, imdb rating, imdb rating count, country, revenue, budget, duration, release date. We encode the alphabetical data to numeric data and then train our model.
+
+Algorithm:
+* We cleaned the data and remove junk values from column
+* Converted the film ratings to whether is the file is adult (1) or not (0)
+* Using budget and revenue, we calculated the success of movie
+* We normalised the data
+* Encoded the country data to numbers
+* Calculated the score of movie using imdb rating and imdb rating count
+* Used XGBoost model for training
+
+
 Movie rating system:
 --------------------
 
